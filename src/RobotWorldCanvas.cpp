@@ -455,7 +455,7 @@ namespace View
 	 */
 	void RobotWorldCanvas::initialise()
 	{
-		SetMinSize( Size( 500, 500));
+		SetMinSize( Size( 1024, 1024));
 
 		notificationHandler = new Base::NotificationHandler< std::function< void( NotifyEvent&) > >( [this](NotifyEvent& anEvent){this->OnNotificationEvent(anEvent);});
 		PushEventHandler( notificationHandler);
