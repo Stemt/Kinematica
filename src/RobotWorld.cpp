@@ -304,7 +304,11 @@ namespace Model
 		*/
 
 		RobotWorld::getRobotWorld().newWall( Point(7,234), Point(419,234) ,false);
-		RobotWorld::getRobotWorld().newGoal( "Goal", Point(320,285),false);
+		RobotWorld::getRobotWorld().newWall( Point(768,256), Point(768,1024) ,false);
+		RobotWorld::getRobotWorld().newWall( Point(512,512), Point(512,0) ,false);
+		RobotWorld::getRobotWorld().newWall( Point(256,768), Point(256,1024) ,false);
+		RobotWorld::getRobotWorld().newWall( Point(768,768), Point(0,768) ,false);
+		RobotWorld::getRobotWorld().newGoal( "Goal", Point(900,900),false);
 
 		notifyObservers();
 	}
