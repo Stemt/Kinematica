@@ -302,6 +302,13 @@ namespace Model
 			RobotWorld::getRobotWorld().newWall( coordinates[i], coordinates[i + 1],false);
 		}
 		*/
+		
+    // create world border
+    int width = 1024,height = 1024;
+		Model::RobotWorld::getRobotWorld().newWall( Point(0,0), Point(0,height) ,false);
+		Model::RobotWorld::getRobotWorld().newWall( Point(0,0), Point(width,0) ,false);
+		Model::RobotWorld::getRobotWorld().newWall( Point(width,height), Point(width,0) ,false);
+		Model::RobotWorld::getRobotWorld().newWall( Point(width,height), Point(0,height) ,false);
 
 		RobotWorld::getRobotWorld().newWall( Point(7,234), Point(419,234) ,false);
 		RobotWorld::getRobotWorld().newWall( Point(768,256), Point(768,1024) ,false);

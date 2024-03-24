@@ -458,12 +458,6 @@ namespace View
 		size_t width = 1024, height = 1024;
 		SetMinSize( Size( width, height));
 
-		// create world border
-		Model::RobotWorld::getRobotWorld().newWall( Point(0,0), Point(0,height) ,false);
-		Model::RobotWorld::getRobotWorld().newWall( Point(0,0), Point(width,0) ,false);
-		Model::RobotWorld::getRobotWorld().newWall( Point(width,height), Point(width,0) ,false);
-		Model::RobotWorld::getRobotWorld().newWall( Point(width,height), Point(0,height) ,false);
-
 		notificationHandler = new Base::NotificationHandler< std::function< void( NotifyEvent&) > >( [this](NotifyEvent& anEvent){this->OnNotificationEvent(anEvent);});
 		PushEventHandler( notificationHandler);
 
