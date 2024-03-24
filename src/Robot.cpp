@@ -445,6 +445,7 @@ namespace Model
 	 */
 	void Robot::drive()
 	{
+    Application::Logger::log(__PRETTY_FUNCTION__);
 		try
 		{
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
@@ -458,7 +459,7 @@ namespace Model
 			}
 
 			unsigned pathPoint = 0;
-			while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size())
+			while (pathPoint < path.size())
 			{
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];
 				Application::Logger::log("new speed: " + std::to_string(speed));
