@@ -33,7 +33,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false)
+								communicating(false),
+                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
@@ -49,7 +50,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false)
+								communicating(false),
+                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
@@ -66,7 +68,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false)
+								communicating(false),
+                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);

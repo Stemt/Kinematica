@@ -13,6 +13,8 @@
 #include "Size.hpp"
 #include "Region.hpp"
 
+#include "Navigation.hpp"
+
 #include <iostream>
 #include <memory>
 #include <mutex>
@@ -315,6 +317,8 @@ namespace Model
 			 *
 			 */
 			Messaging::ServerPtr server;
+
+      Navigation navigation;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_
