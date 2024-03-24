@@ -152,11 +152,13 @@ namespace Application
 		if (!splitterWindow)
 		{
 			GridBagSizer* sizer = new GridBagSizer();
-
+      
 			splitterWindow = new SplitterWindow( clientPanel, DEFAULT_ID);
 
 			splitterWindow->SplitVertically( initialiseLhsPanel(), initialiseRhsPanel());
 
+// BUG: windows managed by size must have this window as parent
+#if 0
 			sizer->Add( 5, 5,
 						GBPosition( 0, 0));
 
@@ -171,6 +173,7 @@ namespace Application
 
 			splitterWindow->SetSizer( sizer);
 			sizer->SetSizeHints( splitterWindow);
+#endif
 		}
 		return splitterWindow;
 	}

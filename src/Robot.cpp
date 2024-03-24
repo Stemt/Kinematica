@@ -461,6 +461,7 @@ namespace Model
 			while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size())
 			{
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];
+				Application::Logger::log("new speed: " + std::to_string(speed));
 				front = BoundedVector( vertex.asPoint(), position);
 				position.x = vertex.x;
 				position.y = vertex.y;
