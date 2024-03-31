@@ -2,10 +2,7 @@
 
 namespace Model{
 
-  Navigation::Navigation(const std::vector<WallPtr>& walls, GoalPtr goal)
-  : walls(walls)
-  , goal(goal)
+  Navigation::Navigation()
   {}
-
 
 } // namespace Model

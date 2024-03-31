@@ -6,6 +6,7 @@
 #include "AbstractAgent.hpp"
 #include "AStar.hpp"
 #include "BoundedVector.hpp"
+#include "LaserDistanceSensor.hpp"
 #include "Message.hpp"
 #include "MessageHandler.hpp"
 #include "Observer.hpp"
@@ -161,6 +162,10 @@ namespace Model
 			 *
 			 */
 			void stopCommunicating();
+			/**
+			 *
+			 */
+      const std::vector<AbstractSensorPtr>& getSensors();
 			/**
 			 *
 			 */

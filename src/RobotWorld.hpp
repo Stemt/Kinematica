@@ -1,6 +1,7 @@
 #ifndef ROBOTWORLD_HPP_
 #define ROBOTWORLD_HPP_
 
+#include "BoundedVector.hpp"
 #include "Config.hpp"
 
 #include "ModelObject.hpp"
@@ -170,6 +171,10 @@ namespace Model
 			mutable std::vector< WayPointPtr > wayPoints;
 			mutable std::vector< GoalPtr > goals;
 			mutable std::vector< WallPtr > walls;
+
+    public:
+      // constants
+      static const BoundedVector NORTH;
 	};
 } // namespace Model
 #endif // ROBOTWORLD_HPP_

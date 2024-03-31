@@ -8,46 +8,29 @@
 #ifndef LASERDISTANCESENSOR_HPP_
 #define LASERDISTANCESENSOR_HPP_
 
+#include "BoundedVector.hpp"
 #include "Config.hpp"
 
 #include "AbstractSensor.hpp"
+#include "LineShape.hpp"
 
 namespace Model
 {
-	/**
-	 *
-	 */
-	class DistanceStimulus : public AbstractStimulus
-	{
-		public:
-			DistanceStimulus( 	double anAngle,
-								double aDistance) :
-				angle(anAngle),
-				distance( aDistance)
-		{
-		}
-		double angle;
-		double distance;
-	};
 	// class DistanceStimulus
 
 	/**
 	 *
 	 */
+  class DistancePercept;
+  typedef std::shared_ptr<DistancePercept> DistancePerceptPtr;
+
 	class DistancePercept : public AbstractPercept
 	{
 		public:
-			explicit DistancePercept( const DistanceStimulus& aDistanceStimulus) :
-				angle(aDistanceStimulus.angle),
-				distance( aDistanceStimulus.distance)
-		{
-		}
-		DistancePercept(double anAngle,
-						double aDistance) :
-			angle(anAngle),
-			distance( aDistance)
-		{
-		}
+			explicit DistancePercept(double angle, double distance) :
+				angle(angle),
+				distance(distance)
+		{}
 		double angle;
 		double distance;
 	};
@@ -55,7 +38,9 @@ namespace Model
 
 	class Robot;
 	typedef std::shared_ptr<Robot> RobotPtr;
-
+  
+  class LaserDistanceSensor;
+  typedef std::shared_ptr<LaserDistanceSensor> LaserDistanceSensorPtr;
 	/**
 	 *
 	 */
@@ -81,7 +66,11 @@ namespace Model
 			/**
 			 *
 			 */
-			virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractStimulus) const override;
+			virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractStimulus) override;
+			/**
+			 *
+			 */
+      virtual const BoundedVector& getPreviousHit() const;
 			/**
 			 * @name Debug functions
 			 */
@@ -97,7 +86,7 @@ namespace Model
 			//@}
 		protected:
 		private:
-
+      BoundedVector previousHit;
 	};
 } // namespace Model
 #endif /* LASERDISTANCESENSOR_HPP_ */

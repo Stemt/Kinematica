@@ -18,6 +18,22 @@ namespace Model
 	/**
 	 *
 	 */
+  void BoundedVector::rotate(double angle)
+  {
+    double px = x;
+    double py = y;
+    x = px*cos(angle) - py*sin(angle);
+    y = py*sin(angle) + py*cos(angle);
+  }
+	/**
+	 *
+	 */
+  double BoundedVector::getAngle(const BoundedVector& aVector){
+    return atan2(dot(aVector), det(aVector));
+  }
+	/**
+	 *
+	 */
 	void BoundedVector::normalise()
 	{
 		double magnitude = getMagnitude();
@@ -47,6 +63,25 @@ namespace Model
 		x = -x;
 		y = -y;
 	}
+	/**
+	 *
+	 */
+  Point BoundedVector::asPoint()
+  {
+    return {x,y};
+  }
+	/**
+	 *
+	 */
+	double BoundedVector::det(const BoundedVector& aVector){
+    return x*aVector.y-y*aVector.x;
+  }
+	/**
+	 *
+	 */
+  double BoundedVector::dot(const BoundedVector& aVector){
+    return x*aVector.x+y*aVector.y;
+  }
 	/**
 	 *
 	 */

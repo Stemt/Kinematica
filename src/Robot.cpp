@@ -17,6 +17,7 @@
 
 #include <chrono>
 #include <ctime>
+#include <memory>
 #include <sstream>
 #include <thread>
 
@@ -33,8 +34,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false),
-                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
+								communicating(false)
+                //,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
@@ -50,8 +51,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false),
-                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
+								communicating(false)
+                //,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
@@ -68,8 +69,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false),
-                navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
+								communicating(false)
+//,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
@@ -138,8 +139,7 @@ namespace Model
 	}
 	/**
 	 *
-	 */
-	BoundedVector Robot::getFront() const
+	 */ BoundedVector Robot::getFront() const
 	{
 		return front;
 	}
@@ -267,6 +267,13 @@ namespace Model
 		Point translatedPoints[] = { getFrontRight(), getFrontLeft(), getBackLeft(), getBackRight() };
 		return Region( 4, translatedPoints);
 	}
+	/**
+	 *
+	 */
+  const std::vector<AbstractSensorPtr>& Robot::getSensors()
+  {
+    return sensors;
+  }
 	/**
 	 *
 	 */
@@ -453,7 +460,7 @@ namespace Model
 		{
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{
-				//sensor->setOn();
+				sensor->setOn();
 			}
 
 			if (speed == 0.0)
@@ -464,6 +471,15 @@ namespace Model
 			unsigned pathPoint = 0;
 			while (pathPoint < path.size())
 			{
+
+        while(perceptQueue.size() > 0){
+          AbstractPerceptPtr percept = perceptQueue.dequeue().value();
+          DistancePerceptPtr distancePercept = std::dynamic_pointer_cast<DistancePercept>(percept);
+          if(distancePercept){
+            Application::Logger::log("Laser measured: " + std::to_string(distancePercept->distance) + " at angle: " + std::to_string(distancePercept->angle));
+          }
+        }
+
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];
 				Application::Logger::log("new speed: " + std::to_string(speed));
 				front = BoundedVector( vertex.asPoint(), position);
@@ -490,7 +506,7 @@ namespace Model
 
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{
-				//sensor->setOff();
+				sensor->setOff();
 			}
 		}
 		catch (std::exception& e)

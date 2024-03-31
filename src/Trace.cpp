@@ -16,9 +16,9 @@ namespace Base
 	const int INDENTIONLEVEL = 3;
 
 	/* static */ bool Trace::traceOn = true;
-	/* static */ bool Trace::traceWithTimeStamp = false;
+	/* static */ bool Trace::traceWithTimeStamp = true;
 	/* static */ bool Trace::traceLineNumber = true;
-	/* static */ bool Trace::traceThreadId = true;
+	/* static */ bool Trace::traceThreadId = false;
 	/* static */ bool Trace::traceExceptions = true;
 
 	/**

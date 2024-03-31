@@ -3,17 +3,21 @@
 
 #include <vector>
 
+#include "BoundedVector.hpp"
 #include "Wall.hpp"
 #include "Goal.hpp"
 
 namespace Model{
-
+  struct Pose{
+    BoundedVector position;
+    BoundedVector front;
+  };
+  
   class Navigation{
   public:
-    Navigation(const std::vector<WallPtr>& walls, GoalPtr goal);
+    Navigation();
   private:
-    std::vector<WallPtr> walls;
-    GoalPtr goal;
+    
   };
 }
 

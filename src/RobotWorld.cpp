@@ -8,8 +8,11 @@
 
 #include <algorithm>
 
-namespace Model
-{
+namespace Model{
+
+  // constants
+  const BoundedVector RobotWorld::NORTH{0,1};
+
 	/**
 	 *
 	 */

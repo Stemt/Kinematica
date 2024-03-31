@@ -29,8 +29,10 @@ namespace Utils
 			<< std::setw(2) << tm.tm_mday << "-"
 			<< std::setw(2) << tm.tm_hour << '-'
 			<< std::setw(2) << tm.tm_min << '-'
-			<< std::setw(2) << tm.tm_sec << '-'
-			<< std::setw(6) << std::chrono::duration_cast<std::chrono::microseconds>(microsecs).count();
+			<< std::setw(2) << tm.tm_sec << '-';
+
+      // keep it readable by omitting unix timestamp
+			// << std::setw(6) << std::chrono::duration_cast<std::chrono::microseconds>(microsecs).count();
 		return os.str();
 	}
 } /* namespace Utils */

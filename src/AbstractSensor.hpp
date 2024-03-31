@@ -73,7 +73,11 @@ namespace Model
 			/**
 			 *
 			 */
-			virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractPercepts) const = 0;
+      virtual std::shared_ptr<AbstractPercept> getPreviousPercept() const;
+			/**
+			 *
+			 */
+			virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractPercepts) = 0;
 			/**
 			 *
 			 */
@@ -109,7 +113,7 @@ namespace Model
 			bool running;
 			std::thread sensorThread;
 			mutable std::recursive_mutex sensorMutex;
-
+      std::shared_ptr<AbstractPercept> previousPercept;
 		private:
 	};
 // class AbstractSensor

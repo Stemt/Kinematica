@@ -1,6 +1,8 @@
 #include "RobotShape.hpp"
 
+#include "BoundedVector.hpp"
 #include "Goal.hpp"
+#include "LaserDistanceSensor.hpp"
 #include "Logger.hpp"
 #include "Notifier.hpp"
 #include "Robot.hpp"
@@ -143,6 +145,17 @@ namespace View
 					 centre.y,
 					 static_cast<int>(centre.x + std::cos( angle - 0.5 * Utils::PI) * 25),
 					 static_cast<int>(centre.y + std::sin( angle - 0.5 * Utils::PI) * 25));
+
+    // Draw Sensors (mainly laser)
+    for(const Model::AbstractSensorPtr& sensor : getRobot()->getSensors()){
+      Model::LaserDistanceSensorPtr laser = std::dynamic_pointer_cast<Model::LaserDistanceSensor>(sensor);
+      if(laser){
+        Model::BoundedVector laserIntersection = laser->getPreviousHit();
+		    dc.SetPen( wxPen( WXSTRING( "RED"), 2, wxPENSTYLE_SOLID));
+        dc.DrawLine(getRobot()->getPosition().x, getRobot()->getPosition().y, 
+          laserIntersection.x, laserIntersection.y);
+      }
+    }
 
 		// Bounty of 0.25 points for anyone who makes the name turn
 		// with the front of the robot, while text centre being displayed in the

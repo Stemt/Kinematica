@@ -35,6 +35,14 @@ class BoundedVector
 		/**
 		 *
 		 */
+		BoundedVector( const Point& aPoint) :
+						x( aPoint.x),
+						y( aPoint.y)
+		{
+		}
+		/**
+		 *
+		 */
 		BoundedVector( const Point& aPoint1,
 					   const Point& aPoint2) :
 						x( aPoint1.x - aPoint2.x),
@@ -62,6 +70,14 @@ class BoundedVector
 		/**
 		 *
 		 */
+    void rotate(double angle);
+		/**
+		 *
+		 */
+		double getAngle(const BoundedVector& aVector);
+		/**
+		 *
+		 */
 		void normalise();
 		/**
 		 *
@@ -71,6 +87,18 @@ class BoundedVector
 		 *
 		 */
 		void reverse();
+		/**
+		 *
+		 */
+    Point asPoint();
+		/**
+		 *
+		 */
+		double det(const BoundedVector& aVector);
+		/**
+		 *
+		 */
+    double dot(const BoundedVector& aVector);
 		/**
 		 *
 		 */
