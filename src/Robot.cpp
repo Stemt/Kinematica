@@ -4,6 +4,8 @@
 #include "CommunicationService.hpp"
 #include "Goal.hpp"
 #include "LaserDistanceSensor.hpp"
+#include "Odometer.hpp"
+#include "Compass.hpp"
 #include "Logger.hpp"
 #include "MainApplication.hpp"
 #include "MathUtils.hpp"
@@ -35,10 +37,13 @@ namespace Model
 								acting(false),
 								driving(false),
 								communicating(false)
-                //,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
+    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
+    attachSensor(odometer);
+    std::shared_ptr<AbstractSensor> compass(new Compass(this));
+    attachSensor(compass);
 	}
 	/**
 	 *
@@ -52,10 +57,13 @@ namespace Model
 								acting(false),
 								driving(false),
 								communicating(false)
-                //,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
+    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
+    attachSensor(odometer);
+    std::shared_ptr<AbstractSensor> compass(new Compass(this));
+    attachSensor(compass);
 	}
 	/**
 	 *
@@ -70,10 +78,13 @@ namespace Model
 								acting(false),
 								driving(false),
 								communicating(false)
-//,navigation(RobotWorld::getRobotWorld().getWalls(), RobotWorld::getRobotWorld().getGoal(0))
 	{
 		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
 		attachSensor( laserSensor);
+    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
+    attachSensor(odometer);
+    std::shared_ptr<AbstractSensor> compass(new Compass(this));
+    attachSensor(compass);
 	}
 	/**
 	 *
@@ -476,8 +487,18 @@ namespace Model
           AbstractPerceptPtr percept = perceptQueue.dequeue().value();
           DistancePerceptPtr distancePercept = std::dynamic_pointer_cast<DistancePercept>(percept);
           if(distancePercept){
-            Application::Logger::log("Laser measured: " + std::to_string(distancePercept->distance) + " at angle: " + std::to_string(distancePercept->angle));
+            Application::Logger::log("Laser: " + std::to_string(distancePercept->distance));
           }
+          TravelPerceptPtr travelPercept = std::dynamic_pointer_cast<TravelPercept>(percept);
+          if(travelPercept){
+            Application::Logger::log("Odometer: " + std::to_string(travelPercept->distance));
+
+          }
+          DirectionPerceptPtr directionPercept = std::dynamic_pointer_cast<DirectionPercept>(percept);
+          if(directionPercept){
+            Application::Logger::log("Compass: " + std::to_string(directionPercept->angle));
+          }
+
         }
 
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];

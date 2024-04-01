@@ -14,7 +14,7 @@
 #include "Size.hpp"
 #include "Region.hpp"
 
-#include "Navigation.hpp"
+#include "Localisation.hpp"
 
 #include <iostream>
 #include <memory>
@@ -323,7 +323,7 @@ namespace Model
 			 */
 			Messaging::ServerPtr server;
 
-      Navigation navigation;
+      Localisation navigation;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

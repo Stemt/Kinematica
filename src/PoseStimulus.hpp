@@ -1,3 +1,6 @@
+#ifndef POSE_STIMULUS_HPP
+#define POSE_STIMULUS_HPP
+
 #include "AbstractSensor.hpp"
 #include "BoundedVector.hpp"
 
@@ -18,3 +21,5 @@ namespace Model{
   };
 
 } // Model
+
+#endif // POSE_STIMULUS_HPP

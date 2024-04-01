@@ -12,7 +12,6 @@
 #include "Config.hpp"
 
 #include "AbstractSensor.hpp"
-#include "LineShape.hpp"
 
 namespace Model
 {

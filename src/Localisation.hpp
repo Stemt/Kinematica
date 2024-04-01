@@ -13,9 +13,9 @@ namespace Model{
     BoundedVector front;
   };
   
-  class Navigation{
+  class Localisation{
   public:
-    Navigation();
+    Localisation();
   private:
     
   };
