@@ -2,15 +2,23 @@
 #define ILOCALISATION_FILTER_HPP_
 
 #include "Matrix.hpp"
-#include <vector>
+#include "AbstractSensor.hpp"
+#include "Queue.hpp"
 
 namespace Model{
 
 class ILocalisationFilter{
   public:
+    ILocalisationFilter(
+        Base::Queue< std::shared_ptr< AbstractPercept > >& perceptQueue)
+    : perceptQueue(perceptQueue)
+    {}
+
     virtual ~ILocalisationFilter()
     {}
-    virtual const Matrix& run(const Matrix& control, const Matrix& measurement) = 0;
+    virtual const Matrix& run(const Matrix& control) = 0;
+  protected:
+    Base::Queue< std::shared_ptr< AbstractPercept > >& perceptQueue;
 };
 
 } // Model

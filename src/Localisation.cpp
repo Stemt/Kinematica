@@ -33,7 +33,7 @@ namespace Model{
 
   void Localisation::updateBelief()
   {
-    beliefHistory.push_back(filter->run(control, measurement));
+    beliefHistory.push_back(filter->run(control));
     control = 0;
     measurement = 0;
   }

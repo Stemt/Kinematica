@@ -472,7 +472,7 @@ namespace Model
 		{
       Matrix belief(1,2,{position.x,position.y});
 
-      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(belief)));
+      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(perceptQueue,belief)));
       
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{
@@ -491,28 +491,6 @@ namespace Model
         BoundedVector heading = front * speed;
         Matrix controlUpdate(1,2,{heading.x,heading.y});
         localisation.addControlUpdate(controlUpdate);
-        localisation.addMeasurementUpdate({1,2,{0,0}});
-        previousHeading = getHeading();
-        while(perceptQueue.size() > 0){
-          AbstractPerceptPtr percept = perceptQueue.dequeue().value();
-          DistancePerceptPtr distancePercept = std::dynamic_pointer_cast<DistancePercept>(percept);
-          if(distancePercept){
-            Application::Logger::log("Laser: " + std::to_string(distancePercept->distance));
-          }
-          TravelPerceptPtr travelPercept = std::dynamic_pointer_cast<TravelPercept>(percept);
-          if(travelPercept){
-            Application::Logger::log("Odometer: " + std::to_string(travelPercept->distance));
-            Matrix odometerUpdate(1,2, {travelPercept->distance,0});
-            localisation.addMeasurementUpdate(odometerUpdate);
-          }
-          DirectionPerceptPtr directionPercept = std::dynamic_pointer_cast<DirectionPercept>(percept);
-          if(directionPercept){
-            Application::Logger::log("Compass: " + std::to_string(directionPercept->angle));
-            Matrix compassUpdate(1,2,{0,directionPercept->angle});
-            localisation.addMeasurementUpdate(compassUpdate);
-          }
-
-        }
         localisation.updateBelief();
 
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];
