@@ -22,12 +22,14 @@ namespace Model{
   {
     public:
       Odometer();
-      explicit Odometer(Robot* robot);
+      explicit Odometer(Robot* robot, double pixelStandardDeviation);
       virtual ~Odometer();
       virtual std::shared_ptr<AbstractStimulus> getStimulus() const override;
       virtual std::shared_ptr<AbstractPercept> getPerceptFor(std::shared_ptr<AbstractStimulus> anAbstractStimulus) override;
+      virtual double getDeviation() const;
     protected:
       BoundedVector previousPosition;
+      double pixelStandardDeviation;
   };
 } // Model
 

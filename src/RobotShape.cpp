@@ -2,6 +2,7 @@
 
 #include "BoundedVector.hpp"
 #include "Goal.hpp"
+#include "ILocalisationFilter.hpp"
 #include "LaserDistanceSensor.hpp"
 #include "Logger.hpp"
 #include "Notifier.hpp"
@@ -155,6 +156,13 @@ namespace View
         dc.DrawLine(getRobot()->getPosition().x, getRobot()->getPosition().y, 
           laserIntersection.x, laserIntersection.y);
       }
+    }
+
+    // Draw belief history
+    const std::vector<Model::Matrix>& beliefHistory = getRobot()->getLocalisation().getBeliefHistory();
+		dc.SetPen( wxPen( WXSTRING( "ORANGE"), 2, wxPENSTYLE_SOLID));
+    for(int i = 1; i < beliefHistory.size(); ++i){
+        dc.DrawLine(beliefHistory[i][0], beliefHistory[i][1], beliefHistory[i-1][0], beliefHistory[i-1][1]);
     }
 
 		// Bounty of 0.25 points for anyone who makes the name turn

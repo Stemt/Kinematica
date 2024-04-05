@@ -74,7 +74,7 @@ class BoundedVector
 		/**
 		 *
 		 */
-		double getAngle(const BoundedVector& aVector);
+		double getAngle(const BoundedVector& aVector) const;
 		/**
 		 *
 		 */
@@ -94,11 +94,11 @@ class BoundedVector
 		/**
 		 *
 		 */
-		double det(const BoundedVector& aVector);
+		double det(const BoundedVector& aVector) const;
 		/**
 		 *
 		 */
-    double dot(const BoundedVector& aVector);
+    double dot(const BoundedVector& aVector) const;
 		/**
 		 *
 		 */

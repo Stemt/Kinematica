@@ -1,5 +1,7 @@
 #include "Compass.hpp"
 #include "RobotWorld.hpp"
+#include "PoseStimulus.hpp"
+#include <random>
 
 namespace Model
 {
@@ -7,8 +9,9 @@ namespace Model
   Compass::Compass()
   {}
 
-  Compass::Compass(Robot* aRobot)
+  Compass::Compass(Robot* aRobot, double radianStandardDeviation)
   : AbstractSensor(aRobot)
+  , radianStandardDeviation(radianStandardDeviation)
   {}
 
   Compass::~Compass()
@@ -27,9 +30,21 @@ namespace Model
     if(!poseStimulus){
       return std::shared_ptr<AbstractPercept>(new DirectionPercept(0));
     }
-
-    DirectionPerceptPtr directionPercept(new DirectionPercept(poseStimulus->front.getAngle(RobotWorld::NORTH)));
+    
+    // use same generators for all instances of Compass
+    static std::random_device randDev{};
+    static std::mt19937 randGen{randDev()};
+    static std::normal_distribution<double> dist{0.0,radianStandardDeviation};
+    
+    
+    double deviation = dist(randGen);
+    DirectionPerceptPtr directionPercept(new DirectionPercept(deviation+poseStimulus->front.getAngle(RobotWorld::NORTH)));
     return directionPercept;
+  }
+
+  double Compass::getDeviation() const
+  {
+    return radianStandardDeviation;
   }
 
 } // Model

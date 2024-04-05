@@ -23,12 +23,12 @@ namespace Model
     double px = x;
     double py = y;
     x = px*cos(angle) - py*sin(angle);
-    y = py*sin(angle) + py*cos(angle);
+    y = px*sin(angle) + py*cos(angle);
   }
 	/**
 	 *
 	 */
-  double BoundedVector::getAngle(const BoundedVector& aVector){
+  double BoundedVector::getAngle(const BoundedVector& aVector) const{
     return atan2(dot(aVector), det(aVector));
   }
 	/**
@@ -73,13 +73,13 @@ namespace Model
 	/**
 	 *
 	 */
-	double BoundedVector::det(const BoundedVector& aVector){
+	double BoundedVector::det(const BoundedVector& aVector)const{
     return x*aVector.y-y*aVector.x;
   }
 	/**
 	 *
 	 */
-  double BoundedVector::dot(const BoundedVector& aVector){
+  double BoundedVector::dot(const BoundedVector& aVector)const{
     return x*aVector.x+y*aVector.y;
   }
 	/**

@@ -11,6 +11,7 @@
 #include "MessageHandler.hpp"
 #include "Observer.hpp"
 #include "Point.hpp"
+#include "RobotWorld.hpp"
 #include "Size.hpp"
 #include "Region.hpp"
 
@@ -59,6 +60,10 @@ namespace Model
 			 *
 			 */
 			virtual ~Robot();
+			/**
+			 *
+			 */
+      virtual void setupSensors();
 			/**
 			 *
 			 */
@@ -177,6 +182,13 @@ namespace Model
 			/**
 			 *
 			 */
+      double getHeading() const
+      {
+        return front.getAngle(RobotWorld::NORTH); 
+      }
+			/**
+			 *
+			 */
 			Point getFrontLeft() const;
 			/**
 			 *
@@ -215,6 +227,11 @@ namespace Model
 			{
 				return path;
 			}
+
+      const Localisation& getLocalisation() const
+      {
+        return localisation;
+      }
 			/**
 			 * @name Messaging::MessageHandler functions
 			 */
@@ -322,8 +339,10 @@ namespace Model
 			 *
 			 */
 			Messaging::ServerPtr server;
-
-      Localisation navigation;
+			/**
+			 *
+			 */
+      Localisation localisation;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

@@ -6,18 +6,25 @@
 #include "BoundedVector.hpp"
 #include "Wall.hpp"
 #include "Goal.hpp"
+#include "ILocalisationFilter.hpp"
 
 namespace Model{
-  struct Pose{
-    BoundedVector position;
-    BoundedVector front;
-  };
   
   class Localisation{
   public:
     Localisation();
-  private:
-    
+    void setFilter(std::shared_ptr<ILocalisationFilter> filter);
+    void updateBelief();
+    void addControlUpdate(const Matrix& control);
+    void addMeasurementUpdate(const Matrix& measurement);
+    const Matrix& getBelief() const;
+    const std::vector<Matrix>& getBeliefHistory() const;
+
+    Matrix control;
+    Matrix measurement;
+    std::vector<Matrix> beliefHistory;
+
+    std::shared_ptr<ILocalisationFilter> filter;
   };
 }
 

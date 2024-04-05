@@ -1,8 +1,11 @@
 #include "Robot.hpp"
 
+#include "BoundedVector.hpp"
 #include "Client.hpp"
 #include "CommunicationService.hpp"
+#include "Conversions.hpp"
 #include "Goal.hpp"
+#include "KalmanFilter.hpp"
 #include "LaserDistanceSensor.hpp"
 #include "Odometer.hpp"
 #include "Compass.hpp"
@@ -38,12 +41,7 @@ namespace Model
 								driving(false),
 								communicating(false)
 	{
-		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-		attachSensor( laserSensor);
-    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
-    attachSensor(odometer);
-    std::shared_ptr<AbstractSensor> compass(new Compass(this));
-    attachSensor(compass);
+    setupSensors();
 	}
 	/**
 	 *
@@ -58,12 +56,7 @@ namespace Model
 								driving(false),
 								communicating(false)
 	{
-		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-		attachSensor( laserSensor);
-    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
-    attachSensor(odometer);
-    std::shared_ptr<AbstractSensor> compass(new Compass(this));
-    attachSensor(compass);
+    setupSensors();
 	}
 	/**
 	 *
@@ -79,12 +72,7 @@ namespace Model
 								driving(false),
 								communicating(false)
 	{
-		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
-		attachSensor( laserSensor);
-    std::shared_ptr<AbstractSensor> odometer(new Odometer(this));
-    attachSensor(odometer);
-    std::shared_ptr<AbstractSensor> compass(new Compass(this));
-    attachSensor(compass);
+    setupSensors();
 	}
 	/**
 	 *
@@ -104,6 +92,18 @@ namespace Model
 			stopCommunicating();
 		}
 	}
+	/**
+	 *
+	 */
+  void Robot::setupSensors()
+  {
+		std::shared_ptr< AbstractSensor > laserSensor( new LaserDistanceSensor( this));
+		attachSensor( laserSensor);
+    std::shared_ptr<AbstractSensor> odometer(new Odometer(this,10.0f));
+    attachSensor(odometer);
+    std::shared_ptr<AbstractSensor> compass(new Compass(this,Utils::deg2grad(2.0f)));
+    attachSensor(compass);
+  }
 	/**
 	 *
 	 */
@@ -466,9 +466,14 @@ namespace Model
 	 */
 	void Robot::drive()
 	{
+    double previousHeading = getHeading();
     Application::Logger::log(__PRETTY_FUNCTION__);
 		try
 		{
+      Matrix belief(1,2,{position.x,position.y});
+
+      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(belief)));
+      
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{
 				sensor->setOn();
@@ -482,7 +487,12 @@ namespace Model
 			unsigned pathPoint = 0;
 			while (pathPoint < path.size())
 			{
-
+        
+        BoundedVector heading = front * speed;
+        Matrix controlUpdate(1,2,{heading.x,heading.y});
+        localisation.addControlUpdate(controlUpdate);
+        localisation.addMeasurementUpdate({1,2,{0,0}});
+        previousHeading = getHeading();
         while(perceptQueue.size() > 0){
           AbstractPerceptPtr percept = perceptQueue.dequeue().value();
           DistancePerceptPtr distancePercept = std::dynamic_pointer_cast<DistancePercept>(percept);
@@ -492,14 +502,18 @@ namespace Model
           TravelPerceptPtr travelPercept = std::dynamic_pointer_cast<TravelPercept>(percept);
           if(travelPercept){
             Application::Logger::log("Odometer: " + std::to_string(travelPercept->distance));
-
+            Matrix odometerUpdate(1,2, {travelPercept->distance,0});
+            localisation.addMeasurementUpdate(odometerUpdate);
           }
           DirectionPerceptPtr directionPercept = std::dynamic_pointer_cast<DirectionPercept>(percept);
           if(directionPercept){
             Application::Logger::log("Compass: " + std::to_string(directionPercept->angle));
+            Matrix compassUpdate(1,2,{0,directionPercept->angle});
+            localisation.addMeasurementUpdate(compassUpdate);
           }
 
         }
+        localisation.updateBelief();
 
 				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<int>(speed)];
 				Application::Logger::log("new speed: " + std::to_string(speed));

@@ -1,4 +1,5 @@
 #include "Odometer.hpp"
+#include <random>
 
 namespace Model
 {
@@ -6,8 +7,10 @@ namespace Model
   Odometer::Odometer()
   {}
 
-  Odometer::Odometer(Robot* aRobot)
+  Odometer::Odometer(Robot* aRobot, double pixelStandardDeviation)
   : AbstractSensor(aRobot)
+  , previousPosition(aRobot->getPosition())
+  , pixelStandardDeviation(pixelStandardDeviation)
   {}
 
   Odometer::~Odometer()
@@ -26,10 +29,21 @@ namespace Model
     if(!poseStimulus){
       return std::shared_ptr<AbstractPercept>(new TravelPercept(0));
     }
+    // use same generators for all instances of Compass
+    static std::random_device randDev{};
+    static std::mt19937 randGen{randDev()};
+    static std::normal_distribution<double> dist{0.0,pixelStandardDeviation};
+
     BoundedVector position(poseStimulus->position);
-    TravelPerceptPtr travelPercept(new TravelPercept((position-previousPosition).getMagnitude()));
+    double deviation = dist(randGen);
+    TravelPerceptPtr travelPercept(new TravelPercept(deviation+(position-previousPosition).getMagnitude()));
     previousPosition = position;
     return travelPercept;
+  }
+
+  double Odometer::getDeviation() const
+  {
+    return pixelStandardDeviation;
   }
 
 } // Model
