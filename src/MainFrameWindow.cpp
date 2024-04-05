@@ -287,6 +287,11 @@ namespace Application
 								[this](CommandEvent &anEvent){this->OnStopListening(anEvent);}),
 					GBPosition( 2, 2),
 					GBSpan( 1, 1), EXPAND);
+		sizer->Add( makeButton( panel,
+								"Switch Filter",
+								[this](CommandEvent &anEvent){this->OnSwitchFilter(anEvent);}),
+					GBPosition( 2, 3),
+					GBSpan( 1, 1), EXPAND);
 
 		panel->SetSizerAndFit( sizer);
 
@@ -413,6 +418,14 @@ namespace Application
 		if (robot)
 		{
 			robot->stopCommunicating();
+		}
+	}
+	void MainFrameWindow::OnSwitchFilter( CommandEvent& UNUSEDPARAM(anEvent))
+	{
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		if (robot)
+		{
+			robot->switchFilter();
 		}
 	}
 } // namespace Application

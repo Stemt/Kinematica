@@ -14,6 +14,7 @@ namespace Model{
   public:
     Localisation();
     void setFilter(std::shared_ptr<ILocalisationFilter> filter);
+    std::shared_ptr<ILocalisationFilter> getFilter();
     void updateBelief();
     void addControlUpdate(const Matrix& control);
     void addMeasurementUpdate(const Matrix& measurement);

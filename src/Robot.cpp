@@ -5,6 +5,7 @@
 #include "CommunicationService.hpp"
 #include "Conversions.hpp"
 #include "Goal.hpp"
+#include "ILocalisationFilter.hpp"
 #include "KalmanFilter.hpp"
 #include "LaserDistanceSensor.hpp"
 #include "Odometer.hpp"
@@ -104,6 +105,7 @@ namespace Model
     attachSensor(odometer);
     std::shared_ptr<AbstractSensor> compass(new Compass(this,Utils::deg2grad(2.0f)));
     attachSensor(compass);
+    switchFilter(); // initialize filter
   }
 	/**
 	 *
@@ -271,6 +273,23 @@ namespace Model
 			c1ient.dispatchMessage( message);
 		}
 	}
+	/**
+	 *
+	 */
+  void Robot::switchFilter(){
+    if(driving){
+      Application::Logger::log("Robot must be stopped to switch filters");
+    };
+    std::shared_ptr<ILocalisationFilter> filter = localisation.getFilter();
+    if(std::dynamic_pointer_cast<ParticleFilter>(filter)){
+      Matrix belief(1,2,{position.x,position.y});
+      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(perceptQueue,belief)));
+      Application::Logger::log("Switched to Kalman filter!");
+    }else{
+      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new ParticleFilter(perceptQueue,10000)));
+      Application::Logger::log("Switched to Particle filter!");
+    }
+  }
 	/**
 	 *
 	 */
@@ -471,10 +490,7 @@ namespace Model
     Application::Logger::log(__PRETTY_FUNCTION__);
 		try
 		{
-      Matrix belief(1,2,{position.x,position.y});
 
-      //localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(perceptQueue,belief)));
-      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new ParticleFilter(perceptQueue,10000)));
       
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{

@@ -170,6 +170,10 @@ namespace Model
 			/**
 			 *
 			 */
+			void switchFilter();
+			/**
+			 *
+			 */
       const std::vector<AbstractSensorPtr>& getSensors();
 			/**
 			 *

@@ -12,6 +12,11 @@ namespace Model{
   {
     this->filter = filter;
   }
+  
+  std::shared_ptr<ILocalisationFilter> Localisation::getFilter()
+  {
+    return filter;
+  }
 
   void Localisation::addControlUpdate(const Matrix &control)
   {
