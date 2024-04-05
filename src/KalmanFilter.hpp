@@ -28,10 +28,6 @@ namespace Model{
         Matrix measurement(1,2,{0,0});
         while(perceptQueue.size() > 0){
           AbstractPerceptPtr percept = perceptQueue.dequeue().value();
-          DistancePerceptPtr distancePercept = std::dynamic_pointer_cast<DistancePercept>(percept);
-          if(distancePercept){
-            Application::Logger::log("Laser: " + std::to_string(distancePercept->distance));
-          }
           TravelPerceptPtr travelPercept = std::dynamic_pointer_cast<TravelPercept>(percept);
           if(travelPercept){
             Application::Logger::log("Odometer: " + std::to_string(travelPercept->distance));

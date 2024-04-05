@@ -8,6 +8,9 @@ namespace Utils{
   static constexpr double deg2grad(double degree){
     return degree * (PI / 180.0f);
   }
+  static constexpr double grad2deg(double radian){
+    return radian / (PI / 180.0f);
+  }
 } // Utils
 
 #endif // CONVERSIONS_HPP_

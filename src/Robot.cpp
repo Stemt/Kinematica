@@ -14,6 +14,7 @@
 #include "MathUtils.hpp"
 #include "Message.hpp"
 #include "MessageTypes.hpp"
+#include "ParticleFilter.hpp"
 #include "RobotWorld.hpp"
 #include "Server.hpp"
 #include "Shape2DUtils.hpp"
@@ -472,7 +473,8 @@ namespace Model
 		{
       Matrix belief(1,2,{position.x,position.y});
 
-      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(perceptQueue,belief)));
+      //localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new KalmanFilter(perceptQueue,belief)));
+      localisation.setFilter(std::shared_ptr<ILocalisationFilter>(new ParticleFilter(perceptQueue,10000)));
       
 			for (std::shared_ptr< AbstractSensor > sensor : sensors)
 			{
